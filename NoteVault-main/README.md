@@ -32,6 +32,8 @@ Clone the Repository
 ```
 git clone https://github.com/CharanKasala/notevault.git
 cd notevault
+cd NoteVault-main
+
 ```
 
 #### Frontend (React):
