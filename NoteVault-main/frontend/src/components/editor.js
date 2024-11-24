@@ -91,8 +91,13 @@ const Editor = () => {
    
     
     if (!title) {
-      toast.info("Please fill in the title for the note." , 
-        {
+      toast.info("Please fill in the title for the note." ,{
+        style: {
+          backgroundColor: '#2196F3',  
+          color: 'white',               
+          borderRadius: '8px',          
+          padding: '10px',             
+        },
           position: "top-center",
           autoClose: 2000 , 
           hideProgressBar: false,
@@ -102,8 +107,13 @@ const Editor = () => {
     });
       return;
     } else if (!category) {
-      toast.info("Please select a category." , 
-        {
+      toast.info("Please select a category." , {
+        style: {
+          backgroundColor: '#2196F3',  
+          color: 'white',               
+          borderRadius: '8px',          
+          padding: '10px',             
+        },
           position: "top-center",
           autoClose: 2000 , 
           hideProgressBar: false,
@@ -113,8 +123,13 @@ const Editor = () => {
     });
       return;
     } else if (!note) {
-      toast.info("Please fill in the content for the note.",
-        {
+      toast.info("Please fill in the content for the note.", {
+        style: {
+          backgroundColor: '#2196F3',  
+          color: 'white',               
+          borderRadius: '8px',          
+          padding: '10px',             
+        },
           position: "top-center",
           autoClose: 2000 , 
           hideProgressBar: false,
