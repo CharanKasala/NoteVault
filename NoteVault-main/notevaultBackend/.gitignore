@@ -3,3 +3,5 @@
 # dependencies
 .env
 ck-vir-env
+backend
+**/__pycache__/
