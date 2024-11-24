@@ -158,7 +158,7 @@ const Home = () => {
 
           
           {visibleCategoryStartIndex + categoriesToShow < categories.length && (
-            <button className="!bg-black  border-[2px] py-2 px-4 rounded-full" onClick={handleNextCategory}>
+            <button className="!bg-white  border-[2px] py-2 px-4 rounded-full" onClick={handleNextCategory}>
               <FaArrowRight className="text-black" />
             </button>
           )}
@@ -176,16 +176,17 @@ const Home = () => {
       </div>
 
       
-      <div className="w-full max-w-5xl grid grid-cols-3 gap-4">
+      <div className="w-full max-w-5xl grid grid-cols-4 gap-4">
         {filteredNotes.length > 0 ? (
           filteredNotes.map((note) => (
             <div
               key={note._id}
-              className="bg-gray-800 p-4 rounded-lg shadow-lg relative cursor-pointer"
+              className="bg-gray-200 p-4 rounded-lg shadow-lg relative cursor-pointer"
               onClick={() => handleNoteClick(note.id)} 
             >
-              <h3 className="text-xl font-bold">{note.title}</h3> 
-              <p className="text-gray-400">{note.content}</p> 
+              
+              <h3 className="text-xl font-bold text-black">{note.title}</h3> 
+              <p className="text-gray-600">{note.content}</p> 
               <span className="text-sm text-gray-400">#{note.category.title}</span> 
 
               {/* Pin Icon */}
@@ -198,14 +199,14 @@ const Home = () => {
             </div>
           ))
         ) : (
-          <p className="text-gray-400">No notes available in this category.</p>
+          <p className="text-black">No notes available in this category.</p>
         )}
       </div>
 
      
       <button
         onClick={() => navigate('/create-note')}
-        className="fixed bottom-10 right-10 bg-white-600 hover:bg-gray-200 text-black py-2 px-4 rounded-full flex items-center"
+        className="fixed bottom-10 right-10 bg-black border-black border text-white py-2 px-4 rounded-full flex items-center"
       >
         <FaPlusCircle className="mr-2" /> Create a new Note
       </button>
