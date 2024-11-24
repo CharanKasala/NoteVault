@@ -26,7 +26,7 @@ function App() {
         {/* Render the header conditionally */}
         <ConditionalHeader />
         <Routes>
-          <Route path="/" element={<h1 className="text-white text-center text-4xl">Welcome to NoteVault</h1>} />
+          <Route path="/" element={<h1 className="text-black text-center text-4xl">Welcome to NoteVault</h1>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route
