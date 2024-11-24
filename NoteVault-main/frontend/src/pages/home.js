@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaPlusCircle, FaThumbtack, FaUserCircle, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { FiFilter } from 'react-icons/fi';
 import { apiCallWithToken, logout } from '../api';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const Home = () => {
   const [notes, setNotes] = useState([]); 
@@ -12,7 +14,11 @@ const Home = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('all'); 
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [newCategoryTitle, setNewCategoryTitle] = useState(''); 
-  const [visibleCategoryStartIndex, setVisibleCategoryStartIndex] = useState(0); // Track which categories to display
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+  const [visibleCategoryStartIndex, setVisibleCategoryStartIndex] = useState(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
   const navigate = useNavigate();
 
   const categoriesToShow = 3; 
@@ -72,7 +78,9 @@ const Home = () => {
     setNotes(updatedNotes);
   };
 
-  
+
+
+  {/*}
   const addNewCategory = async () => {
     if (newCategoryTitle.trim()) {
       const token = localStorage.getItem('token');
@@ -96,8 +104,138 @@ const Home = () => {
       }
     }
   };
+*/}
+
+
+const handleSaveCategory = async (categoryId) => {
+
+  if (newCategoryTitle.trim()) {
+
+    const token = localStorage.getItem('token');
+
+    const url = categoryId
+
+      ? `http://localhost:8000/categories/update/${categoryId}/`
+
+      : 'http://localhost:8000/categories/create/'; 
+
+
+
+
+
+    const method = categoryId ? 'PUT' : 'POST'; 
+
+    const requestBody = JSON.stringify({ title: newCategoryTitle });
+
+
+
+    try {
+
+      const response = await apiCallWithToken(url, {
+
+        method,
+
+        body: requestBody,
+
+      });
+
+
+
+      if (response.ok) {
+
+        const category = await response.json();
+
+
+
+        if (categoryId) {
+
+          setCategories(categories.map((cat) => (cat.id === category.id ? category : cat)));
+
+        } else {
+
+          setCategories([...categories, category]);
+
+        }
+
+        setNewCategoryTitle('');
+
+        setIsModalOpen(false);
+
+        toast.success(categoryId ? 'Category updated successfully!' : 'Category created successfully');
+
+      } else {
+
+        console.error('Failed to save category');
+
+        toast.error(response.statusText);
+
+      }
+
+    } catch (error) {
+
+      console.error('Error saving category:', error);
+
+      toast.error(error.message || 'An unexpected error occurred');
+
+    }
+
+  }
+
+};
+
+
+
+
+
+  const handleDeleteCategory = async (categoryId) => {
+
+    if (categoryId) {
+      try {
+
+        const response = await apiCallWithToken(`http://localhost:8000/categories/delete/${categoryId}/`, { method: 'DELETE' });
 
   
+
+        if (response.ok) {
+
+          const notesToDelete = notes.filter(note => note.category === categoryId);
+
+          setCategories(categories.filter((cat) => cat.id !== categoryId));
+
+          setNotes(notes.filter((note) => note.category !== categoryId));
+
+          if(selectedCategoryId === categoryId) { setSelectedCategoryId('all'); }
+
+          setIsDeleteModalOpen(false);
+
+          if(notesToDelete.length > 0)
+
+            {toast.success('Category and its notes deleted successfully')
+
+          } else{toast.success('Category deleted successfully');
+
+          }
+
+        } else {
+
+          console.error('Failed to delete category');
+
+          toast.error(response.statusText);
+
+        }
+
+      } catch (error) {
+
+        console.error('Error deleting category:', error);
+
+        toast.error(error.message || 'An unexpected error occurred');
+
+      }
+
+    }
+
+  };
+
   const handlePrevCategory = () => {
     if (visibleCategoryStartIndex > 0) {
       setVisibleCategoryStartIndex(visibleCategoryStartIndex - 1);
@@ -114,6 +252,81 @@ const Home = () => {
   const handleNoteClick = (noteId) => {
     navigate(`/edit-note/${noteId}`);
   };
+
+  const handleDropdownToggle = (categoryId) => {
+
+    setOpenDropdown(openDropdown === categoryId ? null : categoryId);
+
+  };
+
+
+
+  useEffect(() => {
+
+    const handleClickOutside = (event) => {
+
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+
+        setOpenDropdown(null); 
+
+      }
+
+    };
+
+    
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => document.removeEventListener('click', handleClickOutside);
+
+  }, []);
+
+
+  const openCreateModal = () => {
+
+    setEditingCategoryId(null);
+
+    setNewCategoryTitle('');
+
+    setIsModalOpen(true);
+
+  };
+
+
+  const openEditModal = (categoryId, currentTitle) => {
+
+    setEditingCategoryId(categoryId); 
+
+    setNewCategoryTitle(currentTitle); 
+
+    setIsModalOpen(true);
+
+    setOpenDropdown(null);
+
+  };
+
+
+  const openDeleteModal = (category) => {
+
+    setCategoryToDelete(category);
+
+    setIsDeleteModalOpen(true);
+
+    setOpenDropdown(null);
+
+  };
+
+
+  const closeDeleteModal = () => {
+
+    setIsDeleteModalOpen(false);
+
+    setCategoryToDelete(null);
+
+  };
+
+
+  const dropdownRef = useRef(null);
 
   return (
     <div className="min-h-screen bg-white text-white flex flex-col items-center p-4">
@@ -145,17 +358,131 @@ const Home = () => {
           {categories
             .slice(visibleCategoryStartIndex, visibleCategoryStartIndex + categoriesToShow)
             .map((category) => (
-              <button
-                key={category._id}
-                onClick={() => setSelectedCategoryId(category.id)}
-                className={`border-[2px] py-2 px-4 rounded-full ${
-                  selectedCategoryId === category.id ? 'bg-black text-white' : 'bg-white text-black'
-                }`}
-              >
-                {category.title}
-              </button>
-            ))}
+              <div key={category.id} className="relative group flex">
 
+          <button
+
+            onClick={() => setSelectedCategoryId(category.id ? category.id : 'all')}
+
+            className={`flex items-center py-2 px-4 rounded-full ${
+
+              selectedCategoryId === category.id ? 'bg-black' : 'bg-gray-700'
+
+            }`}
+
+          >
+
+            {category.title}
+
+        
+
+            {category.id && category.id !== 'all' && (
+
+              <div className="ml-2">
+
+                <button
+
+                  onClick={(e) => {
+
+                    e.stopPropagation(); 
+
+                    handleDropdownToggle(category.id); 
+
+                  }}
+
+                  className="text-white text-xl p-0 bg-gray-500 rounded-full w-4"
+
+                >
+
+                  &#8942;
+
+                </button>
+
+              </div>
+
+            )}
+
+          </button>
+
+        
+
+          {openDropdown === category.id && (
+
+            <div
+
+              ref={dropdownRef}
+
+              className="absolute top-8 right-6 mt-0 bg-white border rounded-md shadow-lg w-28 z-10"
+
+            >
+
+              <div className="absolute top-0 right-0 p-1">
+
+                <button
+
+                  onClick={(e) => {
+
+                    e.stopPropagation(); 
+
+                  }}
+
+                  className="text-white text-xl bg-transparent p-0"
+
+                >
+
+                  &#8942;
+
+                </button>
+
+              </div>
+
+        
+
+              <ul className="space-y-1">
+
+                <li>
+
+                  <button
+
+                    onClick={() => openEditModal(category.id, category.title)}
+
+                    className="block py-2 px-10 text-gray-800 hover:bg-gray-100"
+
+                  >
+
+                    Edit
+
+                  </button>
+
+                </li>
+
+                <li>
+
+                  <button
+
+                    onClick={() => openDeleteModal(category)}
+
+                    className="block py-2 px-8 text-red-600 hover:bg-gray-100 rounded-sm"
+
+                  >
+
+                    Delete
+
+                  </button>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          )}
+
+        </div>
+
+        
+
+        ))}
           
           {visibleCategoryStartIndex + categoriesToShow < categories.length && (
             <button className="!bg-white  border-[2px] py-2 px-4 rounded-full" onClick={handleNextCategory}>
@@ -214,7 +541,7 @@ const Home = () => {
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
         <div className="bg-black p-6 rounded-lg shadow-lg w-1/3">
-          <h3 className="text-2xl mb-4 text-white">Create New Category</h3>
+          <h3 className="text-2xl mb-4">{editingCategoryId ? 'Edit Category' : 'Create New Category'}</h3>
           <input
             type="text"
             className="w-full p-2 mb-4 bg-white border border-gray-600 text-black placeholder-gray-400 rounded"
@@ -230,10 +557,55 @@ const Home = () => {
               Cancel
             </button>
             <button
-              onClick={addNewCategory} 
+               onClick={() => editingCategoryId ? handleSaveCategory(editingCategoryId) : handleSaveCategory("")} 
               className="bg-white text-black py-2 px-4 rounded hover:bg-gray-300"
-            >
-              Save
+              
+              >
+                 {editingCategoryId ? 'Save Changes' : 'Save'}
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+)}
+{isDeleteModalOpen && (
+
+<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+
+  <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-1/3">
+
+    <h3 className="text-2xl mb-4 text-white">
+
+      Are you sure you want to delete this category - <span className="font-bold">{categoryToDelete?.title}</span>?
+
+    </h3>
+
+    <div className="flex justify-end space-x-4">
+
+      <button
+
+        onClick={closeDeleteModal} 
+
+        className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+
+      >
+
+        No
+
+      </button>
+
+      <button
+
+        onClick={() => handleDeleteCategory(categoryToDelete.id)}
+
+        className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+
+                
+              Yes
             </button>
           </div>
         </div>
