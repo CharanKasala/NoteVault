@@ -36,9 +36,12 @@ const Home = () => {
     const fetchNotes = async () => {
       try {
         let notesResponse;
-        if (selectedCategoryId === 'all') {
+        if (selectedCategoryId === undefined  || selectedCategoryId ==='all'  ) 
+        {
           notesResponse = await apiCallWithToken('http://localhost:8000/notes/');
-        } else {
+        } 
+        else 
+        {
           notesResponse = await apiCallWithToken(`http://localhost:8000/notes/category/${selectedCategoryId}/`);
         }
         
@@ -118,23 +121,23 @@ const Home = () => {
 
       {/* search and filter section of the page */}
       <div className="flex items-center w-full max-w-5xl mb-4 space-x-4">
-        <div className="flex items-center bg-white border-2 rounded-md px-4 py-2 w-3/5">
+        <div className="flex items-center bg-white border border-black rounded-full px-4 py-2 w-3/5">
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
             placeholder="Search a Note"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent focus:outline-none text-white w-full"
+            className="bg-transparent focus:outline-none text-black w-full"
           />
         </div>
 
         
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 text-black ">
           
           {visibleCategoryStartIndex > 0 && (
-            <button className="bg-gray-700 py-2 px-4 rounded-full" onClick={handlePrevCategory}>
-              <FaArrowLeft className="text-white" />
+            <button className="!bg-white border-[2px] py-2 px-4 rounded-full" onClick={handlePrevCategory}>
+              <FaArrowLeft className="text-black" />
             </button>
           )}
 
@@ -145,8 +148,8 @@ const Home = () => {
               <button
                 key={category._id}
                 onClick={() => setSelectedCategoryId(category.id)}
-                className={`py-2 px-4 rounded-full ${
-                  selectedCategoryId === category.id ? 'bg-blue-600' : 'bg-gray-700'
+                className={`border-[2px] py-2 px-4 rounded-full ${
+                  selectedCategoryId === category.id ? 'bg-black text-white' : 'bg-white text-black'
                 }`}
               >
                 {category.title}
@@ -155,17 +158,17 @@ const Home = () => {
 
           
           {visibleCategoryStartIndex + categoriesToShow < categories.length && (
-            <button className="bg-gray-700 py-2 px-4 rounded-full" onClick={handleNextCategory}>
-              <FaArrowRight className="text-white" />
+            <button className="!bg-black  border-[2px] py-2 px-4 rounded-full" onClick={handleNextCategory}>
+              <FaArrowRight className="text-black" />
             </button>
           )}
 
           
           <button
-            className="bg-gray-700 py-2 px-4 rounded-full"
+            className="bg-white py-2 px-4 rounded-full"
             onClick={() => setIsModalOpen(true)} 
           >
-            <FaPlusCircle className="text-white" />
+            <FaPlusCircle className="text-black text-3xl" />
           </button>
         </div>
 
@@ -199,15 +202,14 @@ const Home = () => {
         )}
       </div>
 
-      {/* Create New Note Button */}
+     
       <button
         onClick={() => navigate('/create-note')}
-        className="fixed bottom-10 right-10 bg-white-600 hover:bg-gray-100 text-black py-2 px-4 rounded-full flex items-center"
+        className="fixed bottom-10 right-10 bg-white-600 hover:bg-gray-200 text-black py-2 px-4 rounded-full flex items-center"
       >
         <FaPlusCircle className="mr-2" /> Create a new Note
       </button>
 
-      {/* Modal for creating a new category */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
         <div className="bg-black p-6 rounded-lg shadow-lg w-1/3">
