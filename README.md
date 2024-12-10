@@ -5,6 +5,48 @@ organize, and access their notes in a secure and user-friendly environment. The 
 allows users to manage notes with options for categorization and facilitating quick retrieval
 and better organization.
 
+## Overview and Summary
+Note Vault is a web application that allows users to manage and organize their notes efficiently. It offers features for creating, editing, categorizing, and sharing notes, as well as advanced tools for content enhancement like AI-powered summarization and spell-check. Users can also manage their profile settings. Below is a summary of the key features:
+1. Notes Management:
+Create, View, Edit, and Delete Notes: Users can create new notes, update existing ones, or delete them. Each note has the following attributes:
+• Title: A title for the note content.
+• Category: Organize notes into customizable categories.
+• Font Size: Choose the font size for note content.
+•
+Font Style: Select the font style for the note content.
+•
+Fix Spelling and Grammar: Automatically correct spelling and grammar errors in the note content.
+•
+Summarize with AI: Use AI to generate a summarized version of the note.
+•
+Speech-to-Text: Convert spoken words into note content by clicking on the microphone button. (Not deployed to EC2)
+•
+Reset: Clear all content within a note.
+2. Categories Management:
+•
+View Categories: Display a list of categories. Clicking on a category will show the associated notes.
+•
+Add Category: Allow users to create new categories for organizing their notes.
+•
+Update Category: Users can modify the title of an existing category.
+•
+Delete Category: Deleting a category will remove both the category and the notes associated with it.
+3. Note Interaction:
+•
+Pin Notes: Pin important notes to keep them at the top of the note list for easy access.
+•
+Search: Search for notes by title or content.
+•
+Copy: Duplicate an existing note.
+•
+Download: Export a note as a Word document, preserving the original font size and style.
+4. User Profile & Settings:
+•
+View Profile: Display user profile information, including account settings and preferences.
+•
+Logout: Allows users to securely log out of their account
+
+
 ## Technologies Used
 ### Frontend:
 1. React.js (with React Router for navigation)
