@@ -5,19 +5,19 @@ organize, and access their notes in a secure and user-friendly environment. The 
 allows users to manage notes with options for categorization and facilitating quick retrieval
 and better organization.
 
-### Technologies Used
-Frontend:
+## Technologies Used
+### Frontend:
 1. React.js (with React Router for navigation)
 2. TailwindCSS (for styling)
 3. Framer Motion (for animations)
 
-Backend:
+### Backend:
 1. Django
 2. Django REST Framework
 3. MongoDB (via Djongo)
 
 
-### Setup Instructions
+## Instructions to set up
 
 Clone the Repository
 
