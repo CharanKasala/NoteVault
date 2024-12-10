@@ -3,19 +3,21 @@
 NoteVault is a cloud-based note-taking platform designed to help users easily create,
 organize, and access their notes in a secure and user-friendly environment. 
 
----
 
 ## Table of Contents
 
 - [Overview](#overview)
 - [Key Features](#key-features)
-- [AI Features](#ai-features)
+- [AI Powered Tools](#ai-powered-tools)
 - [Technologies used](#technologies-used)
 - [Instructions to setup](#instructions-to-setup)
 
+---
 
 ## Overview
 **Note Vault** is a web application designed to help users manage and organize their notes efficiently. It offers features for creating, editing, categorizing, and sharing notes, along with AI-powered tools for content enhancement. Users can also manage their profile settings for a personalized experience.
+
+---
 
 ## Key Features
 
@@ -60,12 +62,15 @@ organize, and access their notes in a secure and user-friendly environment.
 
 ---
 
-## AI Features
+## AI-Powered Tools
 
-- **AI-powered tools** like summarization and spell-check enhance productivity.
-- **Speech-to-Text** helps with hands-free note-taking.
+**Note Vault** leverages generative AI (GenAI) to enhance productivity and streamline note-taking:
 
+- **Summarization:** Automatically generate concise summaries of lengthy notes, helping you quickly grasp key points.
+- **Spell-Check and Grammar Fix:** Correct errors effortlessly to maintain professional-quality content.
+- **Speech-to-Text:** Use voice input for hands-free note-taking, making it easy to capture ideas on the go.---
 
+---
 
 ## Technologies Used
 ### Frontend:
@@ -78,6 +83,7 @@ organize, and access their notes in a secure and user-friendly environment.
 2. Django REST Framework
 3. MongoDB (via Djongo)
 
+---
 
 ## Instructions to set up
 
