@@ -22,8 +22,8 @@ and better organization.
 Clone the Repository
 
 ```
-git clone https://github.com/yourusername/notevault.git
-cd notevault
+git clone https://github.com/CharanKasala/NoteVault.git
+cd NoteVault  
 ```
 
 #### Frontend (React): 
@@ -46,6 +46,15 @@ This will run the React app at http://localhost:3000.
 Navigate to the Backend Directory
 ```
 cd ../notevaultBackend
+```
+
+Create a Virtual Enivronment if you need
+```
+python -m venv "name-of-vir-env"
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+name-of-vir-env\Scripts\activate
 ```
 
 Install Python Dependencies
