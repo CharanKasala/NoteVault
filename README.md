@@ -1,3 +1,10 @@
+
+# NOTEVAULT
+NoteVault is a cloud-based note-taking platform designed to help users easily create,
+organize, and access their notes in a secure and user-friendly environment. The application
+allows users to manage notes with options for categorization and facilitating quick retrieval
+and better organization.
+
 ### Technologies Used
 Frontend:
 1. React.js (with React Router for navigation)
